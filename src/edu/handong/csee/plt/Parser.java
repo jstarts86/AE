@@ -3,10 +3,8 @@ package edu.handong.csee.plt;
 import java.util.ArrayList;
 import java.util.Stack;
 
-import edu.handong.csee.plt.ast.AST;
-import edu.handong.csee.plt.ast.Add;
-import edu.handong.csee.plt.ast.Num;
-import edu.handong.csee.plt.ast.Sub;
+import edu.handong.csee.plt.ast.*;
+
 public class Parser {
 
 	AST parse(String exampleCode) {
@@ -30,6 +28,19 @@ public class Parser {
 		if (subExpressions.get(0).equals("-")) {
 			return new Sub(parse(subExpressions.get(1)), parse(subExpressions.get(2)));
 		}
+		if (subExpressions.size() == 1  && !isNumeric(subExpressions.get(0))) {
+			return new Id((subExpressions.get(0)));
+		}
+		if (subExpressions.get(0).equals("fun")) {
+			return new Fun((subExpressions.get(1)), parse(subExpressions.get(2)));
+		}
+		if (subExpressions.size() == 2) {
+			return new App(parse(subExpressions.get(0)), parse(subExpressions.get(1)));
+		}
+//		if(subExpressions.get(0).equals("with")) {
+//
+//			return new App(Fun(subExpressions.get(1), parse(subExpressions.get(2))), );
+//		}
 
 		return null;
 	}

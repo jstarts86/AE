@@ -9,12 +9,12 @@ public class Main {
 	public static void main(String[] args) {
 		
 		// This is just an example code. Use args to get -p option and actual code from CLI
-		String exampleCode = "{+ {+ 2 {+ {+ 4 5} 4}} {+ 1 2}}";
-		
+//		String exampleCode = "{+ {+ 2 {+ {+ 4 5} 4}} {+ 1 2}}";
+		//String exampleCode = "{{fun {x} {+ x x}} {+ 3 3}}";
+		String exampleCode = "{with {x 3} {+ x x}})";
 		// Parser
 		Parser parser = new Parser();
 		AST ast = parser.parse(exampleCode);
-		
 		if(ast == null)
 			System.out.println("Syntax Error!");
 		
