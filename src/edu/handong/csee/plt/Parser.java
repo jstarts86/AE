@@ -9,7 +9,9 @@ public class Parser {
 
 	AST parse(String exampleCode) {
 		ArrayList<String> subExpressions = splitExpressionAsSubExpressions(exampleCode);
-
+//		for(int i = 0; i < subExpressions.size(); i++) {
+//			System.out.println("Index " + i + ": " + subExpressions.get(i));
+//		}
 		// num
 		if (subExpressions.size() == 1 && isNumeric(subExpressions.get(0))) {
 
@@ -32,20 +34,30 @@ public class Parser {
 			return new Id((subExpressions.get(0)));
 		}
 		if (subExpressions.get(0).equals("fun")) {
-			return new Fun((subExpressions.get(1)), parse(subExpressions.get(2)));
+			ArrayList<String> unwrapped = splitExpressionAsSubExpressions(subExpressions.get(1));
+			return new Fun((unwrapped.get(0)), parse(subExpressions.get(2)));
 		}
 		if (subExpressions.size() == 2) {
 			return new App(parse(subExpressions.get(0)), parse(subExpressions.get(1)));
 		}
-//		if(subExpressions.get(0).equals("with")) {
-//
-//			return new App(Fun(subExpressions.get(1), parse(subExpressions.get(2))), );
-//		}
+		else if (subExpressions.get(0).equals("with") && subExpressions.size() > 1) {
+			// Split the with expression into its parts
+			String withExpression = subExpressions.get(1);
+			ArrayList<String> identifierValue = splitExpressionAsSubExpressions(withExpression);
+
+			// Ensure there are two parts: i, v
+			if (identifierValue.size() != 2) {
+				System.out.println("Syntax error in 'with' expression");
+				System.exit(0);
+			}
+
+			return new App(new Fun(identifierValue.get(0), parse(subExpressions.get(2))), parse(identifierValue.get(1)));
+		}
 
 		return null;
 	}
 
-	private ArrayList<String> splitExpressionAsSubExpressions(String exampleCode) {
+	public ArrayList<String> splitExpressionAsSubExpressions(String exampleCode) {
 
 		// deal with brackets first.
 		if ((exampleCode.startsWith("{") && !exampleCode.endsWith("}"))
@@ -62,14 +74,14 @@ public class Parser {
 
 	/**
 	 * This method return a list of sub-expression from the given expression. For
-	 * example, {+ 3 {+ 3 4} -> +, 2, {+ 3 4} TODO JC was sleepy while implementing
+	 * example, {+ 3 {+ 3 4} -> +, 3, {+ 3 4} TODO JC was sleepy while implementing
 	 * this method...it has complex logic and might be buggy... You can do better or
 	 * find an external library.
 	 * 
 	 * @param exampleCode
 	 * @return list of sub expressions
 	 */
-	private ArrayList<String> getSubExpressions(String code) {
+	 public ArrayList<String> getSubExpressions(String code) {
 
 		ArrayList<String> subExpressions = new ArrayList<>();
 		Stack<Character> stack = new Stack<>();

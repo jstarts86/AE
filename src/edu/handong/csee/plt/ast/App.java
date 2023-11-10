@@ -19,7 +19,7 @@ public class App extends AST{
     }
 
     public String getASTCode() {
-        return "(app " + funExpr.getASTCode() + " " + argExpr.getASTCode() + " )";
+        return "(app " + funExpr.getASTCode() + " " + argExpr.getASTCode() + ")";
     }
 
 
