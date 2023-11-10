@@ -2,6 +2,7 @@ package edu.handong.csee.plt;
 
 import edu.handong.csee.plt.ast.AST;
 import edu.handong.csee.plt.defsub.DefrdSub;
+import edu.handong.csee.plt.faevalue.FAEValue;
 
 import java.util.ArrayList;
 
@@ -33,7 +34,7 @@ public class Main {
 		// interpreter
 		Interpreter interpreter = new Interpreter();
 		DefrdSub defSub = new DefrdSub();
-		String result = interpreter.interp(ast, defSub);
+		FAEValue result = interpreter.interp(ast, defSub);
 		
 		System.out.println(result);
 	}

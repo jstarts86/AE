@@ -3,13 +3,13 @@ package edu.handong.csee.plt.faevalue;
 import edu.handong.csee.plt.ast.Num;
 
 public class NumV extends FAEValue{
-    Num num;
+    String num = "";
 
-    public NumV(Num num){
+    public NumV(String num){
         this.num = num;
     }
 
-    public Num getNum() {
+    public String getNum() {
         return num;
     }
     public String getFAEValueCode() {
