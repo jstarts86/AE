@@ -21,8 +21,13 @@ public class ASub extends DefrdSub {
     public DefrdSub getDs() {
         return ds;
     }
+
     public String getDefrdSubCode() {
-        return "(aSub " + getName() + " " + getDs() + getValue() + ")";
+        return "(aSub " + getName() + " " + getValue() + " " + getDs().toString() + ")";
+    }
+    @Override
+    public String toString() {
+        return "(aSub " + getName() + " " + getValue() + " " + getDs().toString() + ")";
     }
 
 }

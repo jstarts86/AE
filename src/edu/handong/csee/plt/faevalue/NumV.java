@@ -15,5 +15,9 @@ public class NumV extends FAEValue{
     public String getFAEValueCode() {
         return "(numV " + getNum() + ")";
     }
+    @Override
+    public String toString() {
+        return "(numV " + getNum() + ")";
+    }
 
 }

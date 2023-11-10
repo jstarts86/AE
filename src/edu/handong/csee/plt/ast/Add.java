@@ -20,5 +20,9 @@ public class Add extends AST{
 	public String getASTCode() {
 		return "(add " + lhs.getASTCode() + " " + rhs.getASTCode() + ")";
 	}
+	@Override
+	public String toString() {
+		return "(add " + lhs.getASTCode() + " " + rhs.getASTCode() + ")";
+	}
 }
 

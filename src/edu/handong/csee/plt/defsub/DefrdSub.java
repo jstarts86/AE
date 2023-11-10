@@ -8,9 +8,22 @@ public class DefrdSub {
 
         if(this instanceof EmptySub)
             defSubCode = ((EmptySub)this).getDefrdSubCode();
+
         if(this instanceof ASub)
             defSubCode = ((ASub)this).getDefrdSubCode();
         return defSubCode;
     }
+    @Override
+    public String toString() {
+        String defSubCode = "";
+
+        if(this instanceof EmptySub)
+            defSubCode = ((EmptySub)this).toString();
+
+        if(this instanceof ASub)
+            defSubCode = ((ASub)this).toString();
+        return defSubCode;
+    }
+
 
 }

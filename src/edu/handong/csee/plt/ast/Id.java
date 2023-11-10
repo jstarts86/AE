@@ -18,5 +18,10 @@ public class Id extends AST{
         return "(id " + name + ")" ;
     }
 
+    @Override
+    public String toString() {
+        return "(id " + name + ")" ;
+    }
+
 
 }

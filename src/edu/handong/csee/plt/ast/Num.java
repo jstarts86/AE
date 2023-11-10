@@ -14,4 +14,8 @@ public class Num extends AST {
 	public String getASTCode() {
 		return "(num " + num +")";
 	}
+	@Override
+	public String toString() {
+		return "(num " + num +")";
+	}
 }

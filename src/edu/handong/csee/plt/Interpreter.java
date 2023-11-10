@@ -77,10 +77,11 @@ public class Interpreter {
 		}
 		if(ast instanceof App) {
 			App app = (App) ast;
-			ClosureV f_val = (ClosureV) interp(app.getFunExpr(), ds);
-			ClosureV a_val = (ClosureV) interp(app.getArgExpr(), ds);
-			ASub cache = new ASub(f_val.getParam(), a_val, f_val.getDs());
-			return interp(f_val.getBody(), cache);
+			FAEValue f_val = interp(app.getFunExpr(), ds);
+			FAEValue a_val = interp(app.getArgExpr(), ds);
+			ClosureV closure = (ClosureV) f_val;
+			ASub cache = new ASub(closure.getParam(), a_val, closure.getDs());
+			return interp(closure.getBody(), cache);
 		}
 		return null;
 	}

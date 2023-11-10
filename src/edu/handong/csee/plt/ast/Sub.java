@@ -20,4 +20,8 @@ public class Sub extends AST{
     public String getASTCode() {
         return "(sub " + lhs.getASTCode() + " " + rhs.getASTCode() + ")";
     }
+    @Override
+    public String toString() {
+        return "(sub " + lhs.getASTCode() + " " + rhs.getASTCode() + ")";
+    }
 }
