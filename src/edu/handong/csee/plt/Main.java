@@ -2,15 +2,20 @@ package edu.handong.csee.plt;
 
 import edu.handong.csee.plt.ast.AST;
 import edu.handong.csee.plt.defsub.DefrdSub;
-import edu.handong.csee.plt.faevalue.FAEValue;
-import edu.handong.csee.plt.faevalue.NumV;
+import edu.handong.csee.plt.rcfaevalue.RCFAEValue;
+import edu.handong.csee.plt.rcfaevalue.NumV;
 
 import java.util.ArrayList;
 
 public class Main {
 	
 	static boolean onlyParser = false; // for -p option
-	
+	//test cases
+	//String exampleCode = "{{fun {x} {+ x x}} {+ 3 3}}";
+	//String exampleCode = "{with {y 4} {fun {x} {+ x x}} {+ y 3}}";
+	//String exampleCode = "{with {x 3} {+ x x}}";
+	//String exampleCode = "{{+ x x}}}";
+	//String exampleCode = "{with {z {fun {x} {+ x y}}} {with {y 10} z}}";
 	public static void main(String[] args) {
 		
 		if(args.length == 0) {
@@ -43,13 +48,13 @@ public class Main {
 		else {
 			Interpreter interpreter = new Interpreter();
 			DefrdSub defSub = new DefrdSub();
-			FAEValue result = interpreter.interp(ast, defSub);
+			RCFAEValue result = interpreter.interp(ast, defSub);
 			if(result instanceof NumV num) {
 				String num_result = num.getNum();
 				System.out.println(num_result);
 			}
 			else {
-				System.out.println(result.getFAEValueCode());
+				System.out.println(result.getRCFAEValueCode());
 			}
 		}
 

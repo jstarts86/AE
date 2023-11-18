@@ -1,10 +1,9 @@
-package edu.handong.csee.plt.faevalue;
+package edu.handong.csee.plt.rcfaevalue;
 
 import edu.handong.csee.plt.ast.AST;
 import edu.handong.csee.plt.defsub.DefrdSub;
-import edu.handong.csee.plt.defsub.EmptySub;
 
-public class ClosureV extends FAEValue{
+public class ClosureV extends RCFAEValue {
     String param;
     AST body;
     DefrdSub ds;
@@ -25,7 +24,7 @@ public class ClosureV extends FAEValue{
     public DefrdSub getDs() {
         return ds;
     }
-    public String getFAEValueCode() {
+    public String getRCFAEValueCode() {
         return "(closureV " + getParam() + " " + getBody() + " " + getDs() + ")";
     }
     @Override

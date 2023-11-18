@@ -12,7 +12,8 @@ public class AST {
 
 		if(this instanceof Sub)
 			astCode = ((Sub)this).getASTCode();
-
+		if(this instanceof Mult)
+			astCode = ((Mult)this).getASTCode();
 		if(this instanceof Id)
 			astCode = ((Id)this).getASTCode();
 
@@ -21,6 +22,10 @@ public class AST {
 		if(this instanceof App)
 			astCode = ((App)this).getASTCode();
 
+		if(this instanceof IfZero)
+			astCode =((IfZero)this).getASTCode();
+		if(this instanceof Rec)
+			astCode =((Rec)this).getASTCode();
 		return astCode;
 	}
 }

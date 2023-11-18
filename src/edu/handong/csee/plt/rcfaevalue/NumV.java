@@ -1,8 +1,6 @@
-package edu.handong.csee.plt.faevalue;
+package edu.handong.csee.plt.rcfaevalue;
 
-import edu.handong.csee.plt.ast.Num;
-
-public class NumV extends FAEValue{
+public class NumV extends RCFAEValue {
     String num = "";
 
     public NumV(String num){
@@ -12,7 +10,7 @@ public class NumV extends FAEValue{
     public String getNum() {
         return num;
     }
-    public String getFAEValueCode() {
+    public String getRCFAEValueCode() {
         return "(numV " + getNum() + ")";
     }
     @Override

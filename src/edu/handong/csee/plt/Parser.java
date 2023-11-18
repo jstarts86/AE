@@ -11,21 +11,24 @@ public class Parser {
 		ArrayList<String> subExpressions = splitExpressionAsSubExpressions(exampleCode);
 		// num
 		if (subExpressions.size() == 1 && isNumeric(subExpressions.get(0))) {
-
 			return new Num(subExpressions.get(0));
 		}
-
 		// add
 		if (subExpressions.get(0).equals("+")) {
 
 			return new Add(parse(subExpressions.get(1)), parse(subExpressions.get(2)));
 		}
 
+
 		// TODO implement all other cases....
 
 		//sub
 		if (subExpressions.get(0).equals("-")) {
 			return new Sub(parse(subExpressions.get(1)), parse(subExpressions.get(2)));
+		}
+
+		if (subExpressions.get(0).equals("*")) {
+			return new Mult(parse(subExpressions.get(1)), parse(subExpressions.get(2)));
 		}
 		//id
 		if (subExpressions.size() == 1  && !isNumeric(subExpressions.get(0))) {
@@ -41,6 +44,15 @@ public class Parser {
 			return new App(parse(subExpressions.get(0)), parse(subExpressions.get(1)));
 		}
 		//with
+		if (subExpressions.get(0).equals("if0")) {
+			return new IfZero(parse(subExpressions.get(1)), parse(subExpressions.get(2)), parse(subExpressions.get(3)));
+		}
+		if (subExpressions.get(0).equals("rec")) {
+			ArrayList<String> unwrapped = splitExpressionAsSubExpressions(subExpressions.get(1));
+
+			return new Rec((unwrapped.get(0)), parse(unwrapped.get(1)), parse(subExpressions.get(2)));
+		}
+
 		else if (subExpressions.get(0).equals("with") && subExpressions.size() > 1) {
 			String withExpression = subExpressions.get(1);
 			ArrayList<String> identifierValue = splitExpressionAsSubExpressions(withExpression);
