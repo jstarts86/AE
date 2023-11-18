@@ -12,7 +12,7 @@ public class Id extends AST{
         this.name = name;
     }
 
-    String name;
+    String name = "";
 
     public String getASTCode() {
         return "(id " + name + ")" ;

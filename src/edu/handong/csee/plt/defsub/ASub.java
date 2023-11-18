@@ -3,9 +3,9 @@ package edu.handong.csee.plt.defsub;
 import edu.handong.csee.plt.faevalue.FAEValue;
 
 public class ASub extends DefrdSub {
-    public String name;
-    public FAEValue value;
-    public DefrdSub ds;
+    public String name = "";
+    public FAEValue value = new FAEValue();
+    public DefrdSub ds = new DefrdSub();
 
     public ASub(String name, FAEValue value, DefrdSub ds) {
         this.name = name;
@@ -23,11 +23,11 @@ public class ASub extends DefrdSub {
     }
 
     public String getDefrdSubCode() {
-        return "(aSub " + getName() + " " + getValue() + " " + getDs().toString() + ")";
+        return "(aSub " + getName() + " " + getValue() + " " + getDs() + ")";
     }
     @Override
     public String toString() {
-        return "(aSub " + getName() + " " + getValue() + " " + getDs().toString() + ")";
+        return "(aSub " + getName() + " " + getValue() + " " + getDs() + ")";
     }
 
 }

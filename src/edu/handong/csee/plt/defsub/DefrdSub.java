@@ -13,9 +13,10 @@ public class DefrdSub {
             defSubCode = ((ASub)this).getDefrdSubCode();
         return defSubCode;
     }
+
     @Override
     public String toString() {
-        String defSubCode = "";
+        String defSubCode = "(mtSub)";
 
         if(this instanceof EmptySub)
             defSubCode = ((EmptySub)this).toString();

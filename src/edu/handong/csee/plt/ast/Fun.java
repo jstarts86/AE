@@ -19,7 +19,7 @@ public class Fun extends AST{
     }
 
     public String getASTCode() {
-        return "(fun " + param + " " + body.getASTCode() + ")";
+        return "(fun " + getParam() + " " + body.getASTCode() + ")";
     }
     @Override
     public String toString() {

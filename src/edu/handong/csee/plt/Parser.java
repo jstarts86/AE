@@ -9,9 +9,6 @@ public class Parser {
 
 	AST parse(String exampleCode) {
 		ArrayList<String> subExpressions = splitExpressionAsSubExpressions(exampleCode);
-//		for(int i = 0; i < subExpressions.size(); i++) {
-//			System.out.println("Index " + i + ": " + subExpressions.get(i));
-//		}
 		// num
 		if (subExpressions.size() == 1 && isNumeric(subExpressions.get(0))) {
 
@@ -30,22 +27,24 @@ public class Parser {
 		if (subExpressions.get(0).equals("-")) {
 			return new Sub(parse(subExpressions.get(1)), parse(subExpressions.get(2)));
 		}
+		//id
 		if (subExpressions.size() == 1  && !isNumeric(subExpressions.get(0))) {
 			return new Id((subExpressions.get(0)));
 		}
+		//fun
 		if (subExpressions.get(0).equals("fun")) {
 			ArrayList<String> unwrapped = splitExpressionAsSubExpressions(subExpressions.get(1));
 			return new Fun((unwrapped.get(0)), parse(subExpressions.get(2)));
 		}
+		//App
 		if (subExpressions.size() == 2) {
 			return new App(parse(subExpressions.get(0)), parse(subExpressions.get(1)));
 		}
+		//with
 		else if (subExpressions.get(0).equals("with") && subExpressions.size() > 1) {
-			// Split the with expression into its parts
 			String withExpression = subExpressions.get(1);
 			ArrayList<String> identifierValue = splitExpressionAsSubExpressions(withExpression);
 
-			// Ensure there are two parts: i, v
 			if (identifierValue.size() != 2) {
 				System.out.println("Syntax error in 'with' expression");
 				System.exit(0);
