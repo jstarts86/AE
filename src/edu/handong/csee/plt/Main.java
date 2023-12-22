@@ -2,7 +2,7 @@ package edu.handong.csee.plt;
 
 import edu.handong.csee.plt.ast.AST;
 import edu.handong.csee.plt.defsub.DefrdSub;
-import edu.handong.csee.plt.faevalue.FAEValue;
+import edu.handong.csee.plt.faevalue.RBMRFAEValue;
 import edu.handong.csee.plt.faevalue.NumV;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class Main {
 		else {
 			Interpreter interpreter = new Interpreter();
 			DefrdSub defSub = new DefrdSub();
-			FAEValue result = interpreter.interp(ast, defSub);
+			RBMRFAEValue result = interpreter.interp(ast, defSub);
 			if(result instanceof NumV num) {
 				String num_result = num.getNum();
 				System.out.println(num_result);

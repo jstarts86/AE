@@ -1,8 +1,6 @@
 package edu.handong.csee.plt.faevalue;
 
-import edu.handong.csee.plt.ast.Num;
-
-public class NumV extends FAEValue{
+public class NumV extends RBMRFAEValue {
     String num = "";
 
     public NumV(String num){

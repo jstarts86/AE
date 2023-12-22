@@ -1,13 +1,13 @@
 package edu.handong.csee.plt.defsub;
 
-import edu.handong.csee.plt.faevalue.FAEValue;
+import edu.handong.csee.plt.faevalue.RBMRFAEValue;
 
 public class ASub extends DefrdSub {
     public String name = "";
-    public FAEValue value = new FAEValue();
+    public RBMRFAEValue value = new RBMRFAEValue();
     public DefrdSub ds = new DefrdSub();
 
-    public ASub(String name, FAEValue value, DefrdSub ds) {
+    public ASub(String name, RBMRFAEValue value, DefrdSub ds) {
         this.name = name;
         this.value = value;
         this.ds = ds;
@@ -15,7 +15,7 @@ public class ASub extends DefrdSub {
     public String getName() {
         return name;
     }
-    public FAEValue getValue() {
+    public RBMRFAEValue getValue() {
         return value;
     }
     public DefrdSub getDs() {

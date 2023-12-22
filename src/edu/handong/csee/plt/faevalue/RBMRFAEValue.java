@@ -1,10 +1,6 @@
 package edu.handong.csee.plt.faevalue;
 
-import edu.handong.csee.plt.ast.Add;
-import edu.handong.csee.plt.ast.Num;
-import edu.handong.csee.plt.ast.Sub;
-
-public class FAEValue {
+public class RBMRFAEValue {
 
     public String getFAEValueCode() {
         String faeCode = "";
@@ -13,7 +9,12 @@ public class FAEValue {
             faeCode = ((NumV)this).getFAEValueCode();
         if(this instanceof ClosureV)
             faeCode = ((ClosureV)this).getFAEValueCode();
-
+        if(this instanceof RefclosV)
+            faeCode = ((RefclosV)this).getFAEValueCode();
+        if(this instanceof BoxV)
+            faeCode = ((BoxV)this).getFAEValueCode();
         return faeCode;
     }
+
+
 }

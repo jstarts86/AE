@@ -41,7 +41,7 @@ public class Parser {
 			return new App(parse(subExpressions.get(0)), parse(subExpressions.get(1)));
 		}
 		//with
-		else if (subExpressions.get(0).equals("with") && subExpressions.size() > 1) {
+		if (subExpressions.get(0).equals("with") && subExpressions.size() > 1) {
 			String withExpression = subExpressions.get(1);
 			ArrayList<String> identifierValue = splitExpressionAsSubExpressions(withExpression);
 
@@ -53,6 +53,24 @@ public class Parser {
 			return new App(new Fun(identifierValue.get(0), parse(subExpressions.get(2))), parse(identifierValue.get(1)));
 		}
 
+		if (subExpressions.get(0).equals("newbox")) {
+			return new NewBox(parse(subExpressions.get(1)));
+		}
+		if (subExpressions.get(0).equals("setbox")) {
+			return new SetBox(parse(subExpressions.get(1)), parse(subExpressions.get(2)));
+		}
+		if (subExpressions.get(0).equals("openbox")) {
+			return new OpenBox(parse(subExpressions.get(1)));
+		}
+		if (subExpressions.get(0).equals("seqn")) {
+			return new Seqn(parse(subExpressions.get(1)), parse(subExpressions.get(2)));
+		}
+		if (subExpressions.get(0).equals("refun")) {
+			return new ReFun(subExpressions.get(1), parse(subExpressions.get(2)));
+		}
+		else if (subExpressions.get(0).equals("setvar")){
+			return new SetVar(subExpressions.get(1), parse(subExpressions.get(2)));
+		}
 		return null;
 	}
 
