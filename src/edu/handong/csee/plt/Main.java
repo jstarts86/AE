@@ -27,7 +27,7 @@ public class Main {
 //			System.out.println("No code provided!");
 //			return;
 //		}
-		String exampleCode = "{{rec {count {fun {n} {if0 n 0 {+ 1 {count {- n 1}}}}}} {count 8}}";
+		String exampleCode = "{rec {count {fun {n} {if0 n 0 {+ 1 {count {- n 1}}}}}} {count 8}}";
 //		if(args[0].equals("-p")) {
 //			onlyParser = true;
 //			exampleCode = args[1];
@@ -51,6 +51,7 @@ public class Main {
 		
 		// interpreter
 		// else {
+			System.out.println(exampleCode);
 			System.out.println(ast.getASTCode());
 //			Interpreter interpreter = new Interpreter();
 //			DefrdSub defSub = new DefrdSub();
