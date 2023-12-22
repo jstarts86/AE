@@ -17,6 +17,8 @@ public class Main {
 	{with {x 3} {seqn {{fun {x} {setvar x 5}} x} x}}
 	{with {a 3} {seqn {{fun {x} {setvar x 5}} a} a}}
 	{with {swap {fun {x} {fun {y} {with {z x} {seqn {setvar x y} {setvar y z}}}}}} {with {a 10} {with {b 20} {seqn {{swap a} b} a}}}}
+
+	{rec {count {fun {n} {if0 n 0 {+ 1 {count {- n 1}}}}}} {count 8}}
 	 */
 
 	public static void main(String[] args) {
@@ -25,7 +27,7 @@ public class Main {
 //			System.out.println("No code provided!");
 //			return;
 //		}
-		String exampleCode = "{with {swap {fun {x} {fun {y} {with {z x} {seqn {setvar x y} {setvar y z}}}}}} {with {a 10} {with {b 20} {seqn {{swap a} b} a}}}}";
+		String exampleCode = "{{rec {count {fun {n} {if0 n 0 {+ 1 {count {- n 1}}}}}} {count 8}}";
 //		if(args[0].equals("-p")) {
 //			onlyParser = true;
 //			exampleCode = args[1];
@@ -50,11 +52,11 @@ public class Main {
 		// interpreter
 		// else {
 			System.out.println(ast.getASTCode());
-			Interpreter interpreter = new Interpreter();
-			DefrdSub defSub = new DefrdSub();
-			Store store = new Store();
-			ValueStore result = interpreter.interp(ast, defSub, store);
-			System.out.println(result.getValueStoreCode());
+//			Interpreter interpreter = new Interpreter();
+//			DefrdSub defSub = new DefrdSub();
+//			Store store = new Store();
+//			ValueStore result = interpreter.interp(ast, defSub, store);
+//			System.out.println(result.getValueStoreCode());
 
 		//}
 	}

@@ -68,9 +68,17 @@ public class Parser {
 		if (subExpressions.get(0).equals("refun")) {
 			return new ReFun(subExpressions.get(1), parse(subExpressions.get(2)));
 		}
-		else if (subExpressions.get(0).equals("setvar")){
+		if (subExpressions.get(0).equals("setvar")){
 			return new SetVar(subExpressions.get(1), parse(subExpressions.get(2)));
 		}
+		if (subExpressions.get(0).equals("if0")) {
+			return new IfZero(parse(subExpressions.get(1)), parse(subExpressions.get(2)), parse(subExpressions.get(3)));
+		}
+		if (subExpressions.get(0).equals("rec")) {
+			ArrayList<String> unwrapped = splitExpressionAsSubExpressions(subExpressions.get(1));
+			return new Rec(unwrapped.get(0), parse(unwrapped.get(1)), parse(subExpressions.get(2)));
+		}
+
 		return null;
 	}
 
