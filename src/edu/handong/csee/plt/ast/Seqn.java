@@ -26,10 +26,10 @@ public class Seqn extends AST {
     }
 
     public String getASTCode() {
-        return "{seqn " + ex1.getASTCode() + " " + ex2.getASTCode() + "}";
+        return "(seqn " + ex1.getASTCode() + " " + ex2.getASTCode() + ")";
     }
     @Override
     public String toString() {
-        return "{seqn " + ex1.toString() + " " + ex2.toString() + "}";
+        return "(seqn " + ex1.toString() + " " + ex2.toString() + ")";
     }
 }

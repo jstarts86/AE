@@ -26,11 +26,11 @@ public class SetVar extends AST {
     }
 
     public String getASTCode(){
-        return "{setvar " + getName() + " " + value.getASTCode() + "}";
+        return "(setvar " + getName() + " " + value.getASTCode() + ")";
     }
     @Override
     public String toString(){
-        return "{setvar " + getName() + " " + value.toString() + "}";
+        return "(setvar " + getName() + " " + value.toString() + ")";
     }
 
 }

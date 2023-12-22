@@ -7,22 +7,22 @@ public class EmptySto extends Store {
     String mtSto = "mtSto";
 
     public String getMtSto() {
-        return mtSto;
+        return "mtSto";
     }
 
     public void setMtSto(String mtSto) {
-        this.mtSto = mtSto;
+        this.mtSto = "mtSto";
     }
 
     public EmptySto(String mtSto) {
-        this.mtSto = mtSto;
+        this.mtSto = "mtSto";
     }
 
     public String getStoreCode() {
-        return mtSto;
+        return "(mtSto)";
     }
     @Override
     public String toString() {
-        return "(" + getMtSto() + ")";
+        return "(mtSto)";
     }
 }

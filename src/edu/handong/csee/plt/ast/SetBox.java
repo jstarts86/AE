@@ -26,10 +26,10 @@ public class SetBox extends AST{
     }
 
     public String getASTCode() {
-        return "{setbox " + getBoxName().getASTCode() + " " + getValue().getASTCode() + "}";
+        return "(setbox " + getBoxName().getASTCode() + " " + getValue().getASTCode() + ")";
     }
     @Override
     public String toString() {
-        return "{setbox " + getBoxName().toString() + " " + getValue().toString() + "}";
+        return "(setbox " + getBoxName().toString() + " " + getValue().toString() + ")";
     }
 }

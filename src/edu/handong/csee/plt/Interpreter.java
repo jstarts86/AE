@@ -4,11 +4,10 @@ import edu.handong.csee.plt.ast.*;
 import edu.handong.csee.plt.defsub.ASub;
 import edu.handong.csee.plt.defsub.DefrdSub;
 import edu.handong.csee.plt.defsub.EmptySub;
-import edu.handong.csee.plt.faevalue.ClosureV;
-import edu.handong.csee.plt.faevalue.RBMRFAEValue;
-import edu.handong.csee.plt.faevalue.NumV;
+import edu.handong.csee.plt.faevalue.*;
 import edu.handong.csee.plt.store.*;
 
+import javax.swing.*;
 import java.util.Objects;
 
 
@@ -24,19 +23,19 @@ public class Interpreter {
 		String s = Integer.toString(total);
 		return new NumV(s);
 	}
-	public RBMRFAEValue lookup (String name, DefrdSub ds) {
+	public int lookup (String name, DefrdSub ds) {
 		if(ds instanceof EmptySub) {
 			System.out.println("Lookup Free identifier ");
 		}
 		if(ds instanceof ASub) {
 			if(Objects.equals(name, ((ASub) ds).getName())) {
-				return ((ASub)ds).getValue();
+				return ((ASub)ds).getAddress();
 			}
 			else {
-				return lookup( name , ((ASub) ds).ds);
+				return lookup(name , ((ASub) ds).ds);
 			}
 		}
-		return null;
+		return 0;
 	}
 
 	public RBMRFAEValue storeLookup(int address, Store sto) {
@@ -59,7 +58,7 @@ public class Interpreter {
 			return 0;
 		}
 		if(sto instanceof ASto) {
-			return Integer.max(((ASto) sto).getAddress(), maxAddress(sto));
+			return Integer.max(((ASto) sto).getAddress(), maxAddress(((ASto) sto).getRest()));
 		}
 		return 0;
 	}
@@ -105,21 +104,92 @@ public class Interpreter {
 		//Id
 		if(ast instanceof Id) {
 			Id id = (Id) ast;
-			return lookup(id.getName(), ds);
+			return new ValueStore(storeLookup(lookup(id.getName(), ds), st), st);
 		}
 		//Fun
 		if(ast instanceof Fun) {
 			Fun fun  = (Fun) ast;
-			return new ClosureV(fun.getParam(), fun.getBody(), ds);
+			return new ValueStore(new ClosureV(fun.getParam(), fun.getBody(), ds), st);
 		}
+		if(ast instanceof ReFun) {
+			ReFun refun = (ReFun) ast;
+			return new ValueStore(new RefclosV(refun.getParam(), refun.getBody(), ds), st);
+		}
+
 		//App
 		if(ast instanceof App) {
 			App app = (App) ast;
-			RBMRFAEValue f_val = interp(app.getFunExpr(), ds);
-			RBMRFAEValue a_val = interp(app.getArgExpr(), ds);
-			ClosureV closure = (ClosureV) f_val;
-			ASub cache = new ASub(closure.getParam(), a_val, closure.getDs());
-			return interp(closure.getBody(), cache);
+			if(interp(app.getFunExpr(), ds, st) instanceof ValueStore) {
+				ValueStore function = interp(app.getFunExpr(), ds, st);
+				if(function.getValue() instanceof ClosureV) {
+					ClosureV closureV = (ClosureV) function.getValue();
+					if(interp(app.getArgExpr(), ds, function.getStore()) instanceof ValueStore){
+						ValueStore argument = interp(app.getArgExpr(), ds, function.getStore());
+						int newAddress = malloc(argument.getStore());
+						return interp(closureV.getBody(), new ASub(closureV.getParam(), newAddress, closureV.getDs()), new ASto(newAddress, argument.getValue(), argument.getStore()));
+					}
+				}
+				if (function.getValue() instanceof RefclosV) {
+					RefclosV refclosV = (RefclosV) function.getValue();
+					if(interp(app.getArgExpr(), ds, function.getStore()) instanceof ValueStore) {
+						ValueStore argument = interp(app.getArgExpr(), ds, function.getStore());
+						Id id = (Id) app.getArgExpr();
+						int address = lookup(id.getName(), ds);
+						return interp(refclosV.getBody(), new ASub(refclosV.getParam(), address, refclosV.getDs()), new ASto(address, argument.getValue(), argument.getStore()));
+					}
+				}
+				else {
+					System.out.println("trying to apply a number");
+				}
+			}
+//			RBMRFAEValue f_val = interp(app.getFunExpr(), ds);
+//			RBMRFAEValue a_val = interp(app.getArgExpr(), ds);
+//			ClosureV closure = (ClosureV) f_val;
+//			ASub cache = new ASub(closure.getParam(), a_val, closure.getDs());
+//			return interp(closure.getBody(), cache);
+
+		}
+		if(ast instanceof SetVar) {
+			SetVar setVar = (SetVar) ast;
+			int a = lookup(setVar.getName(), ds);
+			if(interp(setVar.getValue(), ds, st) instanceof ValueStore) {
+				ValueStore something = interp(setVar.getValue(), ds, st);
+				return new ValueStore(something.getValue(), new ASto(a, something.getValue(), st));
+			}
+		}
+		if(ast instanceof NewBox) {
+			NewBox newBox = (NewBox) ast;
+			if (interp(newBox.getValue(),ds ,st) instanceof ValueStore) {
+				ValueStore box1 = interp(newBox.getValue(),ds ,st);
+				int a = malloc(box1.getStore());
+				return new ValueStore(new BoxV(a), new ASto(a, box1.getValue(), box1.getStore()));
+			}
+		}
+		if(ast instanceof SetBox) {
+			SetBox setBox = (SetBox) ast;
+			if(interp(setBox.getBoxName(), ds,st) instanceof ValueStore){
+				ValueStore box1 = interp(setBox.getBoxName(), ds,st);
+				if(interp(setBox.getValue(), ds, st) instanceof ValueStore) {
+					ValueStore box2 = interp(setBox.getValue(), ds, st);
+					BoxV boxV = (BoxV) box1.getValue();
+					return new ValueStore(box2.getValue(), new ASto(boxV.getAddress(),box2.getValue(), box2.getStore()));
+				}
+			}
+		}
+		if(ast instanceof OpenBox) {
+			OpenBox openBox = (OpenBox) ast;
+			if(interp(openBox.getValue(), ds, st) instanceof ValueStore) {
+				ValueStore box1 =interp(openBox.getValue(), ds, st);
+				BoxV boxV = (BoxV) box1.getValue();
+				return new ValueStore(storeLookup(boxV.getAddress(), box1.getStore()), box1.getStore());
+			}
+		}
+		if(ast instanceof Seqn) {
+			Seqn seqn = (Seqn) ast;
+			if(interp(seqn.getEx1(),ds ,st) instanceof ValueStore) {
+				ValueStore a =interp(seqn.getEx1(),ds ,st);
+				return interp(seqn.getEx2(), ds, a.getStore());
+			}
 		}
 		return null;
 	}

@@ -27,4 +27,11 @@ public class ValueStore {
     public void setStore(Store store) {
         this.store = store;
     }
+    public String getValueStoreCode() {
+        return "(v*s " +"\n" + getValue().getFAEValueCode() + "\n" + getStore().getStoreCode() + ")";
+    }
+
+    public String toString() {
+        return "(v*s " +"\n" + getValue().toString() + "\n" + getStore().toString() + ")";
+    }
 }
