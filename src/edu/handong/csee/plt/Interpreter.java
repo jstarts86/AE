@@ -237,20 +237,14 @@ public class Interpreter {
 			}
 		}
 		if (ast instanceof Rec) {
-		   Rec rec = (Rec) ast;
-			ValueStore valueHolder = new ValueStore(new NumV("198"), st);
-			NumV boxContent =  (NumV) valueHolder.getValue();
-			Num numbers = new Num(boxContent.getNum());
-			NewBox boxes = new NewBox(numbers);
-			DefrdSub newDS = new ARecSub(rec.getName(), boxes, ds);
+			Rec rec = (Rec) ast;
+			NewBox valueHolder = new NewBox(new Num("198"));
+			ARecSub newDS = new ARecSub(rec.getName(), valueHolder, ds);
+			RBMRFAEValue newValueHolderValue = interp(rec.getExpression(),newDS, st).getValue();
 
-			ValueStore evaluatedNamedExpr = interp(rec.getExpression(), newDS, st);
-			valueHolder.setValue(evaluatedNamedExpr.getValue());
-
-
+			valueHolder.setValue(newValueHolderValue);
 			return interp(rec.getFunctionCall(), newDS, st);
 		}
-
 		return null;
 	}
 }
