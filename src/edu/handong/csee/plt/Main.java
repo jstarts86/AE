@@ -23,41 +23,40 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-//		if(args.length == 0) {
-//			System.out.println("No code provided!");
-//			return;
-//		}
-		String exampleCode = "{rec {count {fun {n} {if0 n 0 {+ 1 {count {- n 1}}}}}} {count 8}}";
-//		if(args[0].equals("-p")) {
-//			onlyParser = true;
-//			exampleCode = args[1];
-//		}
-//		else {
-//			exampleCode = args[0];
-//		}
-//		if (exampleCode.isEmpty()) {
-//			System.out.println("No code :////");
-//			return;
-//		}
+		if(args.length == 0) {
+			System.out.println("No code provided!");
+			return;
+		}
+		String exampleCode = "";
+		if(args[0].equals("-p")) {
+			onlyParser = true;
+			exampleCode = args[1];
+		}
+		else {
+			exampleCode = args[0];
+		}
+		if (exampleCode.isEmpty()) {
+			System.out.println("No code :////");
+			return;
+		}
 		Parser parser = new Parser();
 		ArrayList<String> hi = parser.splitExpressionAsSubExpressions(exampleCode);
 
 		AST ast = parser.parse(exampleCode);
-//		if(ast == null)
-//			System.out.println("Syntax Error!");
-//
-//		if(onlyParser)
-//			System.out.println(ast.getASTCode());
+		if(ast == null)
+			System.out.println("Syntax Error!");
+
+		if(onlyParser)
+			System.out.println(ast.getASTCode());
 		
 		// interpreter
-		// else {
+		 else {
 			System.out.println(exampleCode);
 			System.out.println(ast.getASTCode());
 			DefrdSub defSub = new DefrdSub();
 			Store store = new Store();
 			ValueStore result = Interpreter.interp(ast, defSub, store);
 			System.out.println(result.getValueStoreCode());
-
-		//}
+		}
 	}
 }

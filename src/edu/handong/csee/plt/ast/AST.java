@@ -15,7 +15,6 @@ public class AST {
 
 		if(this instanceof Id)
 			astCode = ((Id)this).getASTCode();
-
 		if(this instanceof Fun)
 			astCode = ((Fun)this).getASTCode();
 		if(this instanceof App)
