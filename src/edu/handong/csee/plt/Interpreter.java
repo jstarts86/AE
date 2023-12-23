@@ -241,8 +241,9 @@ public class Interpreter {
 			NewBox valueHolder = new NewBox(new Num("198"));
 			ARecSub newDS = new ARecSub(rec.getName(), valueHolder, ds);
 			RBMRFAEValue newValueHolderValue = interp(rec.getExpression(),newDS, st).getValue();
-
-			valueHolder.setValue(newValueHolderValue);
+			NumV newValueHolderNumV = (NumV) newValueHolderValue;
+			Num newValueHolderNum = new Num(newValueHolderNumV.getNum());
+			valueHolder.setValue(newValueHolderNum);
 			return interp(rec.getFunctionCall(), newDS, st);
 		}
 		return null;
