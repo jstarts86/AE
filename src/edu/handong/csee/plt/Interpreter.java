@@ -17,29 +17,34 @@ public class Interpreter {
 	public interface NumOp {
 		int operation(int a, int b);
 	}
-	public static RBMRFAEValue strict(RBMRFAEValue input, Store sto) {
+	public static RBMRFAEValue strict(RBMRFAEValue input) {
 		if(input instanceof ExpressionV) {
 			ExpressionV e_input = ((ExpressionV) input);
 			if(e_input.getValueBox().getValue() == null) {
+				EmptySto sto = new EmptySto();
 				RBMRFAEValue strictValue = Interpreter.interp(e_input.getExpression(), e_input.getDs(), sto).getValue();
-				strictValue = strict(strictValue,sto);
-				NumV strictNum = (NumV) strictValue;
-				e_input.getValueBox().setValue(strictNum.getNum());
-				e_input.getValueBox().getValue();
+				strictValue = strict(strictValue);
+				NumV strictNumV = (NumV) strictValue;
+				Num extractedNum = new Num(strictNumV.getNum());
+				e_input.getValueBox().setValue(extractedNum);
+				return strictValue;
 			} else {
-				return ((ExpressionV) input).getValueBox().getValue();
+				Num evaluatedNum = (Num) e_input.getValueBox().getValue();
+				return new NumV(evaluatedNum.getStrNum());
 			}
 		}
 		return input;
 	}
 	public static RBMRFAEValue operateOp(RBMRFAEValue a, RBMRFAEValue b, NumOp op) {
+		a = strict(a);
+		b = strict(b);
 		NumV a_a = (NumV) a;
 		NumV b_b = (NumV) b;
 		int total = op.operation(Integer.parseInt(a_a.getNum()), Integer.parseInt(b_b.getNum()));
 		String s = Integer.toString(total);
 		return new NumV(s);
 	}
-	public int lookup (String name, DefrdSub ds, Store sto) {
+	public static int lookup(String name, DefrdSub ds) {
 		if(ds instanceof EmptySub) {
 			System.out.println("Lookup Free identifier ");
 		}
@@ -48,7 +53,7 @@ public class Interpreter {
 				return ((ASub)ds).getAddress();
 			}
 			else {
-				return lookup(name , ((ASub) ds).ds, sto);
+				return lookup(name , ((ASub) ds).ds);
 			}
 		}
 		if(ds instanceof ARecSub) {
@@ -61,7 +66,7 @@ public class Interpreter {
 		return 0;
 	}
 
-	public RBMRFAEValue storeLookup(int address, Store sto) {
+	public static RBMRFAEValue storeLookup(int address, Store sto) {
 		if(sto instanceof EmptySto) {
 			System.out.println("No value at address");
 		}
@@ -76,7 +81,7 @@ public class Interpreter {
 		return null;
 	}
 
-	public int maxAddress(Store sto) {
+	public static int maxAddress(Store sto) {
 		if(sto instanceof EmptySto) {
 			return 0;
 		}
@@ -85,8 +90,14 @@ public class Interpreter {
 		}
 		return 0;
 	}
-	public int malloc(Store sto) {
+	public static int malloc(Store sto) {
 		return 1 + maxAddress(sto);
+	}
+
+	public static Boolean numZero(RBMRFAEValue n) {
+		NumV number = (NumV) n;
+		int numberInt = Integer.getInteger(number.getNum());
+        return numberInt == 0;
 	}
 
 	public static ValueStore interp(AST ast, DefrdSub ds, Store st) {
@@ -213,6 +224,27 @@ public class Interpreter {
 				ValueStore a =interp(seqn.getEx1(),ds ,st);
 				return interp(seqn.getEx2(), ds, a.getStore());
 			}
+		}
+		if (ast instanceof IfZero) {
+			IfZero ifZero = (IfZero) ast;
+			ValueStore vs = interp(ifZero.getTestExpression(), ds, st);
+			RBMRFAEValue seperatedValue = vs.getValue();
+			if (numZero(seperatedValue)) {
+				return interp(ifZero.getThenExpression(), ds, st);
+			}
+			else {
+				return interp(ifZero.getElseExpression(), ds, st);
+			}
+		}
+		if (ast instanceof Rec) {
+			Rec rec = (Rec) ast;
+			NewBox valueHolder = new NewBox(new Num("198"));
+			ARecSub newDS = new ARecSub(rec.getName(), valueHolder, ds);
+			RBMRFAEValue newValueHolderValue = interp(rec.getExpression(),newDS, st).getValue();
+			NumV newValueHolderNumV = (NumV) newValueHolderValue;
+			Num newValueHolderNum = new Num(newValueHolderNumV.getNum());
+			valueHolder.setValue(newValueHolderNum);
+			return interp(rec.getFunctionCall(), newDS, st);
 		}
 		return null;
 	}

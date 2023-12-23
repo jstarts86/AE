@@ -8,7 +8,7 @@ import edu.handong.csee.plt.ast.*;
 public class Parser {
 
 	AST parse(String exampleCode) {
-		ArrayList<String> subExpressions = splitExpressionAsSubExpressions(exampleCode);
+				ArrayList<String> subExpressions = splitExpressionAsSubExpressions(exampleCode);
 		// num
 		if (subExpressions.size() == 1 && isNumeric(subExpressions.get(0))) {
 
@@ -28,7 +28,7 @@ public class Parser {
 			return new Sub(parse(subExpressions.get(1)), parse(subExpressions.get(2)));
 		}
 		//id
-		if (subExpressions.size() == 1  && !isNumeric(subExpressions.get(0))) {
+		if (subExpressions.size() == 1  && !isNumeric(subExpressions.get(0)) && !(subExpressions.get(0).equals("newbox")) && !(subExpressions.get(0).equals("openbox"))) {
 			return new Id((subExpressions.get(0)));
 		}
 		//fun
@@ -37,7 +37,7 @@ public class Parser {
 			return new Fun((unwrapped.get(0)), parse(subExpressions.get(2)));
 		}
 		//App
-		if (subExpressions.size() == 2) {
+		if (subExpressions.size() == 2 && !(subExpressions.get(0).equals("newbox")) && !(subExpressions.get(0).equals("openbox"))) {
 			return new App(parse(subExpressions.get(0)), parse(subExpressions.get(1)));
 		}
 		//with

@@ -53,11 +53,10 @@ public class Main {
 		// else {
 			System.out.println(exampleCode);
 			System.out.println(ast.getASTCode());
-//			Interpreter interpreter = new Interpreter();
-//			DefrdSub defSub = new DefrdSub();
-//			Store store = new Store();
-//			ValueStore result = interpreter.interp(ast, defSub, store);
-//			System.out.println(result.getValueStoreCode());
+			DefrdSub defSub = new DefrdSub();
+			Store store = new Store();
+			ValueStore result = Interpreter.interp(ast, defSub, store);
+			System.out.println(result.getValueStoreCode());
 
 		//}
 	}

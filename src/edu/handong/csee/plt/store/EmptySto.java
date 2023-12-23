@@ -14,7 +14,7 @@ public class EmptySto extends Store {
         this.mtSto = "mtSto";
     }
 
-    public EmptySto(String mtSto) {
+    public EmptySto() {
         this.mtSto = "mtSto";
     }
 
