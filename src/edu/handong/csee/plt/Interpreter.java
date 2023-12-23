@@ -1,6 +1,7 @@
 package edu.handong.csee.plt;
 
 import edu.handong.csee.plt.ast.*;
+import edu.handong.csee.plt.defsub.ARecSub;
 import edu.handong.csee.plt.defsub.ASub;
 import edu.handong.csee.plt.defsub.DefrdSub;
 import edu.handong.csee.plt.defsub.EmptySub;
@@ -23,7 +24,7 @@ public class Interpreter {
 		String s = Integer.toString(total);
 		return new NumV(s);
 	}
-	public int lookup (String name, DefrdSub ds) {
+	public int lookup (String name, DefrdSub ds, Store sto) {
 		if(ds instanceof EmptySub) {
 			System.out.println("Lookup Free identifier ");
 		}
@@ -32,7 +33,14 @@ public class Interpreter {
 				return ((ASub)ds).getAddress();
 			}
 			else {
-				return lookup(name , ((ASub) ds).ds);
+				return lookup(name , ((ASub) ds).ds, sto);
+			}
+		}
+		if(ds instanceof ARecSub) {
+			ARecSub sub = (ARecSub) ds;
+			if(Objects.equals(name, ((ARecSub) ds).getName())) {
+				Num innerValue = (Num) sub.getValueBox().getValue();
+				return Integer.parseInt(innerValue.getStrNum());
 			}
 		}
 		return 0;
