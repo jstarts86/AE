@@ -17,6 +17,21 @@ public class Interpreter {
 	public interface NumOp {
 		int operation(int a, int b);
 	}
+	public static RBMRFAEValue strict(RBMRFAEValue input, Store sto) {
+		if(input instanceof ExpressionV) {
+			ExpressionV e_input = ((ExpressionV) input);
+			if(e_input.getValueBox().getValue() == null) {
+				RBMRFAEValue strictValue = Interpreter.interp(e_input.getExpression(), e_input.getDs(), sto).getValue();
+				strictValue = strict(strictValue,sto);
+				NumV strictNum = (NumV) strictValue;
+				e_input.getValueBox().setValue(strictNum.getNum());
+				e_input.getValueBox().getValue();
+			} else {
+				return ((ExpressionV) input).getValueBox().getValue();
+			}
+		}
+		return input;
+	}
 	public static RBMRFAEValue operateOp(RBMRFAEValue a, RBMRFAEValue b, NumOp op) {
 		NumV a_a = (NumV) a;
 		NumV b_b = (NumV) b;
@@ -74,7 +89,7 @@ public class Interpreter {
 		return 1 + maxAddress(sto);
 	}
 
-	public ValueStore interp(AST ast, DefrdSub ds, Store st) {
+	public static ValueStore interp(AST ast, DefrdSub ds, Store st) {
 		//Num
 		if(ast instanceof Num) {
 			Num num = (Num) ast;
