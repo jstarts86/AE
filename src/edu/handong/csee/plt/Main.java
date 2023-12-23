@@ -25,7 +25,7 @@ public class Main {
 //			System.out.println("No code provided!");
 //			return;
 //		}
-		String exampleCode = "{with {swap {fun {x} {fun {y} {with {z x} {seqn {setvar x y} {setvar y z}}}}}} {with {a 10} {with {b 20} {seqn {{swap a} b} a}}}}";
+		String exampleCode = "{with {b {newbox 7}} {seqn {setbox b 10} {openbox b}}}";
 //		if(args[0].equals("-p")) {
 //			onlyParser = true;
 //			exampleCode = args[1];
@@ -41,8 +41,9 @@ public class Main {
 		ArrayList<String> hi = parser.splitExpressionAsSubExpressions(exampleCode);
 
 		AST ast = parser.parse(exampleCode);
-//		if(ast == null)
-//			System.out.println("Syntax Error!");
+		if(ast == null) {
+			System.out.println("Syntax Error!");
+		}
 //
 //		if(onlyParser)
 //			System.out.println(ast.getASTCode());

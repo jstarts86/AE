@@ -28,10 +28,10 @@ public class ValueStore {
         this.store = store;
     }
     public String getValueStoreCode() {
-        return "(v*s " +"\n" + getValue().getFAEValueCode() + "\n" + getStore().getStoreCode() + ")";
+        return "(v*s " + getValue().getFAEValueCode() + " " + getStore().getStoreCode() + ")";
     }
 
     public String toString() {
-        return "(v*s " +"\n" + getValue().toString() + "\n" + getStore().toString() + ")";
+        return "(v*s " + getValue().toString() + " " + getStore().toString() + ")";
     }
 }
