@@ -16,6 +16,7 @@ public class Main {
 	//String exampleCode = "{with {x 3} {+ x x}}";
 	//String exampleCode = "{{+ x x}}}";
 	//String exampleCode = "{with {z {fun {x} {+ x y}}} {with {y 10} z}}";
+	//String exampleCode = "{with {b {newbox 7}} {seqn {setbox b 10} {openbox b}}}";
 	public static void main(String[] args) {
 		
 		if(args.length == 0) {
